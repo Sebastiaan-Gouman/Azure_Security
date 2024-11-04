@@ -24,7 +24,28 @@ After sending this action to the repeater in BurpSuite I changed the information
 
 To see if this worked I take the email from the response, and the new password, and try to log in.
 Here we can see the login attempt, using the newly set password on an account we don't own.
+
 ![Login.png](..%2Fmedia%2FLogin.png)
 
 And here we go, using the Insecure Direct Object Reference method we changed the password for another user.
+
 ![Succes.png](..%2Fmedia%2FSucces.png)
+
+This is great, but in a database of users we might want to search for a specific user to attack. 
+Well we actually can, because this web application has another vulnerability!
+
+While still logged in I went to the "User" page. In BurpSuite I turn the intercept on, and enter the name "John" in the search field. 
+After that, I forwarded the request. BurpSuite now shows me the following data:
+
+![SQLI.png](..%2Fmedia%2FSQLI.png)
+
+Once again I sent this to the repeater, here I can alter the contents to initiate a SQL injection attack. 
+
+```
+"value":"hello' or '1'='1"
+"authlevel":"' or '1'='1"
+```
+
+And once again the web application gives us a lot of information. Even though it isn't pretty, all user accounts are in here!
+
+![SQLi result.png](..%2Fmedia%2FSQLi%20result.png)
